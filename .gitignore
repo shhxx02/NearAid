@@ -1,0 +1,25 @@
+# Root node_modules (if any)
+node_modules/
+
+# Client build + deps
+client/node_modules/
+client/build/
+
+# Server deps
+server/node_modules/
+
+# Env files
+.env
+server/.env
+client/.env
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# misc
+.DS_Store
+dist/
+coverage/
