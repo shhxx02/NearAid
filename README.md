@@ -1,56 +1,45 @@
-NearAid is a full-stack web application that connects donors with NGOs, shelters, and individuals in need through a location-based donation system. Post items you want to donate, browse nearby donations, and make a real impact in your community.
+📖 About The Project
+NearAid is a full-stack web application that bridges the gap between donors and recipients. Whether you're an individual wanting to donate items or an organization looking for resources, NearAid makes it simple to connect with your local community.
 
-🌟 Features
-🔐 Authentication & User Management
+✨ Why NearAid?
 
-Secure JWT Authentication - Register, login, and manage your account
-User Profiles - Track your donations and acceptances
-Protected Routes - Secure donation posting with authentication
-
-📦 Donation Management
-
-Post Donations - Share items you want to donate (food, clothing, books, electronics, etc.)
-Browse Donations - View all available donations in real-time
-Search & Filter - Find donations by city and category
-Accept Donations - Connect with donors to arrange pickup
-Real-time Status Tracking - Track donation status (available, accepted, completed)
-
-🗺️ Location Features
-
-Interactive Maps - View donation locations on OpenStreetMap (powered by Leaflet.js)
-Geocoding - Automatic address-to-coordinates conversion
-City-based Search - Filter donations by your city
-Location Markers - Click markers to see donation details
-
-🎨 User Experience
-
-Responsive Design - Works seamlessly on desktop, tablet, and mobile
-Beautiful UI - Modern gradient designs with smooth animations
-Real-time Updates - Instant feedback on all actions
-Intuitive Navigation - Easy-to-use interface for all users
+🎯 Local Impact - Find donations in your city
+🗺️ Interactive Maps - See exact donation locations
+🔒 Secure Platform - JWT authentication & protected routes
+📱 Responsive Design - Works on all devices
+🆓 Completely Free - No hidden costs or fees
 
 
-🛠️ Tech Stack
+🚀 Features
+<table>
+<tr>
+<td width="50%">
+For Donors
+
+✅ Post donation items easily
+✅ Track donation status
+✅ Add location with interactive map
+✅ Manage your donation history
+✅ Connect directly with recipients
+
+</td>
+<td width="50%">
+For Recipients
+
+✅ Browse available donations
+✅ Filter by city & category
+✅ View donation details & location
+✅ Accept donations instantly
+✅ Contact donor information
+
+</td>
+</tr>
+</table>
+
+🛠️ Built With
 Frontend
-
-React.js - Component-based UI library
-React Router - Client-side routing
-Tailwind CSS - Utility-first CSS framework
-Axios - HTTP client for API requests
-Leaflet.js - Interactive map library
-React-Leaflet - React components for Leaflet
-
+React.js • React Router • Tailwind CSS • Axios • Leaflet.js
 Backend
-
-Node.js - JavaScript runtime
-Express.js - Web application framework
-MongoDB Atlas - Cloud database
-Mongoose - MongoDB object modeling
-JWT (jsonwebtoken) - Authentication tokens
-bcryptjs - Password hashing
-CORS - Cross-origin resource sharing
-
-APIs & Services
-
-OpenStreetMap Nominatim - Free geocoding service (address → coordinates)
-Leaflet.js - Free, open-source map rendering
+Node.js • Express.js • MongoDB • Mongoose • JWT • bcryptjs
+APIs
+OpenStreetMap Nominatim (Geocoding) • Leaflet.js (Interactive Maps)
