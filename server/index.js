@@ -8,7 +8,12 @@ const uploadRoutes = require('./routes/upload');
 
 
 const app = express();
-app.use(cors());
+
+const corsOptions = {
+  origin: process.env.CLIENT_URL || 'http://localhost:3000',
+  credentials: true
+};
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use('/api/donations', donationRoutes);
@@ -26,7 +31,9 @@ app.get('/',(req,res)=>{
   });
 })
 
-
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK' });
+});
 
 const PORT = process.env.PORT || 5000;
 
