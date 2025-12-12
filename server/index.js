@@ -16,9 +16,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(express.json());
-app.use('/api/donations', donationRoutes);
-app.use('/api/auth', authRoutes);
-app.use('/api/upload', uploadRoutes);
+
 
 connectDB();
 
@@ -32,8 +30,15 @@ app.get('/',(req,res)=>{
 })
 
 app.get('/health', (req, res) => {
-  res.json({ status: 'OK' });
+  res.json({ 
+    status: 'OK',
+    timestamp: new Date().toISOString()
+  });
 });
+
+app.use('/api/donations', donationRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/upload', uploadRoutes);
 
 const PORT = process.env.PORT || 5000;
 
