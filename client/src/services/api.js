@@ -53,7 +53,12 @@
 
 import axios from 'axios';
 
-const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+// ✅ Auto-detect environment
+const isProduction = window.location.hostname !== 'localhost';
+const BASE_URL = isProduction 
+  ? 'https://nearaid.onrender.com/api'
+  : 'http://localhost:5000/api';
+console.log('🔗 API URL:', BASE_URL);
 
 // Get token from localStorage
 const getToken = () => {
