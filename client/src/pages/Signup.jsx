@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import { signup } from '../services/api';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -27,26 +28,25 @@ const Signup = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
+  e.preventDefault();
+  setLoading(true);
+  setError(null);
 
-    try {
-      const response = await axios.post('http://localhost:5000/api/auth/signup', formData);
+  try {
+    const response = await signup(formData); // ✅ Uses api.js now
 
-      const token = response.data.token;
-      const user = response.data.user;
-      login(token, user);
-      // Save token to localStorage
-      
-      // Redirect to browse page
-      navigate('/browse');
-      
-    } catch (err) {
-      setError(err.response?.data?.message || 'Signup failed');
-      setLoading(false);
-    }
-  };
+    const token = response.token;
+    const user = response.user;
+    login(token, user);
+    
+    // Redirect to browse page
+    navigate('/browse');
+    
+  } catch (err) {
+    setError(err.response?.data?.message || 'Signup failed');
+    setLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-white flex items-center justify-center p-4">
