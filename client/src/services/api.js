@@ -54,11 +54,8 @@
 import axios from 'axios';
 
 // ✅ Auto-detect environment
-const isProduction = window.location.hostname !== 'localhost';
-const BASE_URL = isProduction 
-  ? 'https://nearaid.onrender.com/api'
-  : 'http://localhost:5000/api';
-console.log('🔗 API URL:', BASE_URL);
+const BASE_URL = 'https://nearaid.onrender.com/api';
+console.log('🔗 FORCED API URL:', BASE_URL);
 
 // Get token from localStorage
 const getToken = () => {
