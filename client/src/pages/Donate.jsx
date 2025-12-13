@@ -468,12 +468,18 @@ const Donate = () => {
     setUploading(true);
 
     try {
+
+      const isProduction = window.location.hostname !== 'localhost';
+      const API_BASE = isProduction 
+        ? 'https://nearaid.onrender.com/api'
+        : 'http://localhost:5000/api';
+
       for (const file of files) {
         const formDataUpload = new FormData();
         formDataUpload.append('image', file);
 
-        const res = await axios.post('http://localhost:5000/api/upload/single', formDataUpload, {
-          headers: { 'Content-Type': 'multipart/form-data' },
+        const res = await axios.post(`${API_BASE}/upload/single`, formDataUpload, {
+            headers: { 'Content-Type': 'multipart/form-data' },
         });
 
         if (res.data?.imageUrl) {
@@ -607,7 +613,12 @@ const Donate = () => {
     if (img.startsWith('http://') || img.startsWith('https://')) {
       return img; // already full URL
     }
-    return `http://localhost:5000/${img.replace(/^\/+/, '')}`;
+    const isProduction = window.location.hostname !== 'localhost';
+    const BASE = isProduction 
+      ? 'https://nearaid.onrender.com'
+      : 'http://localhost:5000';
+      
+    return `${BASE}/${img.replace(/^\/+/, '')}`;
   };
 
 
