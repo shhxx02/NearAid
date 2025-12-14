@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import axios from 'axios';
+import { login as apiLogin } from '../services/api'; // ✅ Added this
 
 const Login = () => {
   const navigate = useNavigate();
@@ -26,15 +26,12 @@ const Login = () => {
     setError(null);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', formData);
+      const response = await apiLogin(formData); // ✅ Changed this line
       
-      const token = response.data.token;
-      const user = response.data.user;
-      // ✅ update AuthContext (this sets localStorage & state)
+      const token = response.token;
+      const user = response.user;
       login(token, user);
-      // Save token to localStorage
       
-      // Redirect to browse page
       navigate('/browse');
       
     } catch (err) {
