@@ -54,8 +54,12 @@
 import axios from 'axios';
 
 // ✅ Auto-detect environment
-const BASE_URL = 'https://nearaid.onrender.com/api';
-console.log('🔗 FORCED API URL:', BASE_URL);
+const isProduction = window.location.hostname !== 'localhost';
+const BASE_URL = isProduction 
+  ? 'https://nearaid.onrender.com/api'
+  : 'http://localhost:5000/api';
+
+console.log('🔗 API BASE URL:', BASE_URL);
 
 // Get token from localStorage
 const getToken = () => {
@@ -90,7 +94,10 @@ export const donationAPI = {
   getAllDonations: async () => {
     try {
       const response = await api.get('/donations');
-      return response.data;
+      // ✅ Handle both { data: [...] } and [...] formats
+      const donations = response.data?.data || response.data || [];
+      console.log('✅ Fetched donations (array):', Array.isArray(donations), donations.length);
+      return Array.isArray(donations) ? donations : [];
     } catch (error) {
       console.error('Error fetching donations:', error);
       throw error;
@@ -130,7 +137,8 @@ export const donationAPI = {
   getDonationsByCity: async (city) => {
     try {
       const response = await api.get(`/donations/city/${city}`);
-      return response.data;
+      const donations = response.data?.data || response.data || [];
+      return Array.isArray(donations) ? donations : [];
     } catch (error) {
       console.error('Error fetching donations by city:', error);
       throw error;
