@@ -171,35 +171,50 @@ const Profile = () => {
       return;
     }
 
-const fetchMyDonations = async () => {
-  try {
-    const token = localStorage.getItem('token');
+    const fetchMyDonations = async () => {
+      try {
+        // ✅ Production-aware API URL
+        const isProduction = window.location.hostname !== 'localhost';
+        const API_BASE = isProduction 
+          ? 'https://nearaid.onrender.com/api'
+          : 'http://localhost:5000/api';
 
-    const response = await axios.get('http://localhost:5000/api/donations/user', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+        const token = localStorage.getItem('token');
 
-    const allDonations = response.data?.data || [];
-    const currentUserId = user._id;
+        // ✅ Fetch ALL donations
+        const response = await axios.get(`${API_BASE}/donations`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-    // 🔹 Donations POSTED by this user
-    const postedByMe = allDonations.filter(
-      (donation) => donation.postedBy === currentUserId
-    );
+        const allDonations = response.data || [];
+        
+        console.log('📦 All donations:', allDonations);
+        console.log('👤 Current user ID:', user._id);
 
-    // 🔹 Donations ACCEPTED by this user
-    const acceptedByMe = allDonations.filter(
-      (donation) => donation.acceptedByUser === currentUserId
-    );
+        // ✅ Filter donations POSTED by this user
+        const postedByMe = allDonations.filter((donation) => {
+          const posterId = donation.postedBy?._id || donation.postedBy;
+          const userId = user._id || user.id;
+          return posterId === userId;
+        });
 
-    setMyDonations(postedByMe);
-    setAcceptedCount(acceptedByMe.length);
-  } catch (error) {
-    console.error('Error fetching donations:', error);
-  } finally {
-    setLoading(false);
-  }
-};
+        // ✅ Filter donations ACCEPTED by this user
+        const acceptedByMe = allDonations.filter((donation) => {
+          return donation.acceptedBy?.email === user.email ||
+                 donation.acceptedBy?.phone === user.phone;
+        });
+
+        console.log('✅ My posted donations:', postedByMe.length);
+        console.log('✅ My accepted donations:', acceptedByMe.length);
+
+        setMyDonations(postedByMe);
+        setAcceptedCount(acceptedByMe.length);
+      } catch (error) {
+        console.error('❌ Error fetching donations:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
     fetchMyDonations();
   }, [user]);
@@ -210,7 +225,14 @@ const fetchMyDonations = async () => {
   };
 
   if (loading) {
-    return <div className="min-h-screen p-8 text-center">Loading profile...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading profile...</p>
+        </div>
+      </div>
+    );
   }
 
   if (!user) {
@@ -239,7 +261,7 @@ const fetchMyDonations = async () => {
               <p className="text-gray-600 mb-1">📞 {user.phone}</p>
               <p className="text-gray-600 mb-1">📍 {user.city}</p>
               <p className="text-sm text-gray-500 mt-2">
-                Account Type: <span className="font-semibold">{user.userType}</span>
+                Account Type: <span className="font-semibold capitalize">{user.userType}</span>
               </p>
             </div>
 
@@ -264,7 +286,7 @@ const fetchMyDonations = async () => {
           </div>
           <div className="bg-yellow-50 p-6 rounded-lg border-l-4 border-yellow-600">
             <p className="text-sm text-gray-600">Rating</p>
-            <p className="text-3xl font-bold text-yellow-600">⭐ {user.rating || 5}</p>
+            <p className="text-3xl font-bold text-yellow-600">⭐ {user.rating || 5.0}</p>
           </div>
         </div>
 
@@ -274,10 +296,11 @@ const fetchMyDonations = async () => {
 
           {myDonations.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-600 mb-4">You haven't posted any donations yet.</p>
+              <div className="text-6xl mb-4">📭</div>
+              <p className="text-gray-600 mb-4 text-lg">You haven't posted any donations yet.</p>
               <button
                 onClick={() => navigate('/donate')}
-                className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors"
+                className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-semibold"
               >
                 Post Your First Donation
               </button>
@@ -287,7 +310,7 @@ const fetchMyDonations = async () => {
               {myDonations.map((donation) => (
                 <div
                   key={donation._id}
-                  className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer"
+                  className="border-2 border-gray-200 rounded-lg p-6 hover:shadow-lg transition-all cursor-pointer hover:border-blue-300"
                   onClick={() => navigate(`/donation/${donation._id}`)}
                 >
                   <div className="mb-3">
@@ -296,22 +319,34 @@ const fetchMyDonations = async () => {
                         donation.status === 'available'
                           ? 'bg-green-100 text-green-800'
                           : donation.status === 'accepted'
+                          ? 'bg-yellow-100 text-yellow-800'
+                          : donation.status === 'completed'
                           ? 'bg-blue-100 text-blue-800'
                           : 'bg-gray-100 text-gray-800'
                       }`}
                     >
-                      {donation.status}
+                      {donation.status.toUpperCase()}
                     </span>
                   </div>
-                  <h3 className="text-lg font-semibold mb-2">{donation.title}</h3>
+                  <h3 className="text-lg font-bold mb-2 text-gray-800">{donation.title}</h3>
                   <p className="text-gray-600 text-sm mb-3 line-clamp-2">
                     {donation.description}
                   </p>
-                  <div className="text-sm text-gray-500">
-                    <p>📦 {donation.category}</p>
-                    <p>📍 {donation.location?.city}</p>
-                    <p>📅 {new Date(donation.createdAt).toLocaleDateString()}</p>
+                  <div className="text-sm text-gray-600 space-y-1">
+                    <p>📦 Category: <span className="font-semibold">{donation.category}</span></p>
+                    <p>📊 Quantity: <span className="font-semibold">{donation.quantity}</span></p>
+                    <p>📍 Location: <span className="font-semibold">{donation.location?.city}</span></p>
+                    <p>📅 Posted: <span className="font-semibold">{new Date(donation.createdAt).toLocaleDateString()}</span></p>
                   </div>
+
+                  {/* Show acceptor info if accepted */}
+                  {donation.status === 'accepted' && donation.acceptedBy && (
+                    <div className="mt-4 pt-4 border-t border-gray-200">
+                      <p className="text-xs text-gray-500 mb-1">Accepted by:</p>
+                      <p className="text-sm font-semibold text-gray-700">{donation.acceptedBy.name}</p>
+                      <p className="text-sm text-gray-600">{donation.acceptedBy.phone}</p>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
