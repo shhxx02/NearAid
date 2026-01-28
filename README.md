@@ -92,60 +92,50 @@ https://near-aid-3nqc.vercel.app/
 ---
 
 ## Project Structure
-``
+
+```
 NearAid/
-│
-├── client/ # Frontend (React)
-│ ├── public/
-│ └── src/
-│ ├── components/
-│ │ ├── AcceptDonationModal.jsx
-│ │ ├── DonationMap.jsx
-│ │ ├── Footer.jsx
-│ │ └── ProtectedRoute.jsx
-│ │
-│ ├── context/
-│ │ └── AuthContext.js
-│ │
-│ ├── pages/
-│ │ ├── Home.jsx
-│ │ ├── Browse.jsx
-│ │ ├── Donate.jsx
-│ │ ├── DonationDetail.jsx
-│ │ ├── Login.jsx
-│ │ ├── Signup.jsx
-│ │ └── Profile.jsx
-│ │
-│ ├── services/
-│ │ └── api.js
-│ │
-│ ├── App.js
-│ ├── index.js
-│ └── App.css
-│
-├── server/ # Backend (Node + Express)
-│ ├── config/
-│ │ ├── database.js
-│ │ └── cloudinary.js
-│ │
-│ ├── controllers/
-│ │ ├── authController.js
-│ │ └── donationController.js
-│ │
-│ ├── middleware/
-│ │ └── auth.js
-│ │
-│ ├── models/
-│ │ ├── User.js
-│ │ └── Donation.js
-│ │
-│ ├── routes/
-│ │ ├── auth.js
-│ │ └── donationroutes.js
-│ │
-│ ├── upload.js
-│ ├── index.js
-│ └── .env
-│
+├── client/
+│   ├── public/
+│   └── src/
+│       ├── components/
+│       │   ├── AcceptDonationModal.jsx
+│       │   ├── DonationMap.jsx
+│       │   ├── Footer.jsx
+│       │   └── ProtectedRoute.jsx
+│       ├── context/
+│       │   └── AuthContext.js
+│       ├── pages/
+│       │   ├── Home.jsx
+│       │   ├── Browse.jsx
+│       │   ├── Donate.jsx
+│       │   ├── DonationDetail.jsx
+│       │   ├── Login.jsx
+│       │   ├── Signup.jsx
+│       │   └── Profile.jsx
+│       ├── services/
+│       │   └── api.js
+│       ├── App.js
+│       ├── index.js
+│       └── App.css
+├── server/
+│   ├── config/
+│   │   ├── database.js
+│   │   └── cloudinary.js
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   └── donationController.js
+│   ├── middleware/
+│   │   └── auth.js
+│   ├── models/
+│   │   ├── User.js
+│   │   └── Donation.js
+│   ├── routes/
+│   │   ├── auth.js
+│   │   └── donationroutes.js
+│   ├── upload.js
+│   ├── index.js
+│   └── .env
 └── README.md
-``
+```
+
